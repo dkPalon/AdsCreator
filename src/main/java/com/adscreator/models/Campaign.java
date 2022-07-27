@@ -1,5 +1,5 @@
 package com.adscreator.models;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-public record Campaign(String name, String[] productIDs, LocalDateTime startTime, Double bid) { }
+public record Campaign(String name, String[] productIDs, LocalDate startTime, Double bid) { }

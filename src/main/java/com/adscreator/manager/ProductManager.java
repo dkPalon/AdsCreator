@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Set;
 
 @Component
 public class ProductManager {
@@ -20,6 +21,10 @@ public class ProductManager {
 
     public Product getProduct(String productID) {
         return this.products.get(productID);
+    }
+
+    public Set<String> getIDs() {
+        return this.products.keySet();
     }
 
     @PostConstruct

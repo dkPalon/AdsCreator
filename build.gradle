@@ -1,0 +1,30 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.1'
+    id 'java'
+}
+
+version = '1.0.0'
+group = 'com.adscreator'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation platform('org.springframework.boot:spring-boot-dependencies:2.7.1')
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
+}

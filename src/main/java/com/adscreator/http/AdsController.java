@@ -35,10 +35,13 @@ public class AdsController {
     }
 
     @GetMapping(path = "/serveAd/category={category}", produces = "application/json")
-    public Product serveAd (@PathVariable String category) {
+    public Product serveAd (@PathVariable String category, HttpServletResponse response) {
         LOGGER.info("Got Request for ad serving for Category: " + category);
         Product product = adsManager.serveAd(category);
         LOGGER.info("Sending back product: " + product);
+        if (product == null) {
+            response.setStatus(400);
+        }
         return product;
     }
 

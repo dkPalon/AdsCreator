@@ -54,7 +54,10 @@ public class CampaignManager {
 
     public Product getProductWithHighestBidding(String category) {
         List<Campaign> categoryList = this.categoryMap.get(category);
-        Product product = iterateOverCampaigns(categoryList, category, false);
+        Product product = null;
+        if (categoryList != null) {
+            product = iterateOverCampaigns(categoryList, category, false);
+        }
         if (product == null) {
             product = iterateOverCampaigns(this.campaignList, category, true);
         }

@@ -28,7 +28,7 @@ public class CampaignManager {
     public void addCampaign(Campaign campaign) {
         boolean nameIsFree = campaignList.stream().noneMatch(t -> t.name().equals(campaign.name()));
         boolean validIDs = productManager.getIDs().containsAll(Arrays.asList(campaign.productIDs()));
-        if (!nameIsFree || campaign.bid() < 0 || !validIDs) {
+        if (!nameIsFree || campaign.bid() <= 0 || !validIDs) {
             LOGGER.info("Received invalid Campaign");
             LOGGER.info("Name check: " + nameIsFree);
             LOGGER.info("Bid: " + campaign.bid());

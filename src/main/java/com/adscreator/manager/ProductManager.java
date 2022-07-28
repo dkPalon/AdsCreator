@@ -1,41 +1,54 @@
 package com.adscreator.manager;
 
+import com.adscreator.data.ProductRepository;
 import com.adscreator.models.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-@Component
+@Service
 public class ProductManager {
-    private final HashMap<String, Product> products;
-    private final Logger LOGGER = LoggerFactory.getLogger(ProductManager.class);
+    private final ProductRepository productRepository;
 
-    public ProductManager() {
-        this.products = new HashMap<>();
+    @Autowired
+    public ProductManager(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
+    private final Logger LOGGER = LoggerFactory.getLogger(ProductManager.class);
+
     public Product getProduct(String productID) {
-        return this.products.get(productID);
+        return this.productRepository.findBySerialNumber(productID);
     }
 
     public Set<String> getIDs() {
-        return this.products.keySet();
+        return this.productRepository.getAllIds();
+    }
+
+    public List<Product> getProductsInCategory(String category) {
+        return this.productRepository.findProductsByCategory(category);
     }
 
     @PostConstruct
     private void initProducts() {
         for (int i = 0; i < 10; i++) {
             String serialNumber = "A" + i;
-            this.products.put(serialNumber,
-                    new Product(generateName(), generateCategory(), generatePrice(), serialNumber));
+            Product genProduct = new Product();
+            genProduct.setSerialNumber(serialNumber);
+            genProduct.setPrice(generatePrice());
+            genProduct.setCategory(generateCategory());
+            genProduct.setTitle(generateName());
+            this.productRepository.save(genProduct);
         }
+        this.productRepository.flush();
         LOGGER.info("Created Products are: ");
-        LOGGER.info(String.valueOf(this.products));
+        LOGGER.info(String.valueOf(this.productRepository.findAll().toString()));
     }
 
     private double generatePrice() {
